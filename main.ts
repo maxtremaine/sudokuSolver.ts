@@ -2,4 +2,6 @@ import { ArrayOfNumbers } from "./src/ArrayOfNumbers.ts";
 
 const startFile = await Deno.readTextFile("./io/start.sudoku");
 
-console.log(startFile);
+const [err, startSudoku] = ArrayOfNumbers.fromSudokuFile("sudokuFile");
+
+console.log(err, startSudoku);

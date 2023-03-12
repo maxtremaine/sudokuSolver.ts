@@ -9,6 +9,28 @@ export class ArrayOfNumbers {
     return new ArrayOfNumbers(numbers);
   }
 
+  static fromSudokuFile(fileString: string): [string, ArrayOfNumbers] {
+    // Check length.
+    if (fileString.length !== 167) {
+      return [
+        `Expected fileString to have .length 167, found ${fileString.length}.`,
+        ArrayOfNumbers.from([]),
+      ];
+    }
+
+    // Check characters.
+    for (const character of fileString) {
+      if (!sudokuFileValues.includes(character)) {
+        return [
+          `A .sudoku file cannot contain ${character}.`,
+          ArrayOfNumbers.from([]),
+        ];
+      }
+    }
+
+    return ["", ArrayOfNumbers.from([])];
+  }
+
   getMissingDigits(): ArrayOfNumbers {
     return new ArrayOfNumbers(
       [...Array(10).keys()].slice(1) // Range from 1 to 9, inclusive.
@@ -36,3 +58,30 @@ export class ArrayOfNumbers {
     return ArrayOfNumbers.from(acc);
   }
 }
+
+const sudokuFileValues = [
+  "_",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  " ",
+  "\n",
+  "|",
+  "_",
+  "-",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+];

@@ -107,33 +107,40 @@ Deno.test("Gets missing digits.", function () {
   );
 });
 
-Deno.test("Tests for duplicates.", async function(t) {
-  await t.step("Has duplicates.", function() {
+Deno.test("Tests for duplicates.", async function (t) {
+  await t.step("Has duplicates.", function () {
     assertEquals(ArrayOfNumbers.from([1, 2, 2, 3]).hasDuplicates(), true);
-  })
-  await t.step("All unique.", function() {
+  });
+  await t.step("All unique.", function () {
     assertEquals(ArrayOfNumbers.from([1, 2, 3]).hasDuplicates(), false);
-  })
+  });
 });
 
-Deno.test("Replaces values.", async function(t) {
+Deno.test("Replaces values.", async function (t) {
   const inputList = ArrayOfNumbers.from([1, 2, 3]);
   const duplicateList = ArrayOfNumbers.from([1, 2, 3]);
   const updatedList = ArrayOfNumbers.from([1, 3, 3]);
 
   const replacedList = inputList.replace(1, 3);
 
-  await t.step("Creates a new list.", function() {
+  await t.step("Creates a new list.", function () {
     assertEquals(replacedList, updatedList);
   });
-  await t.step("Leaves the old list the same.", function() {
+  await t.step("Leaves the old list the same.", function () {
     assertEquals(inputList, duplicateList);
-  })
+  });
 });
 
-Deno.test("Identifies unique values.", function() {
+Deno.test("Identifies unique values.", function () {
   assertEquals(
     ArrayOfNumbers.from([1, 2, 2, 3, 3, 3, 4, 4]).uniqueValues(),
     ArrayOfNumbers.from([1, 2, 3, 4]),
+  );
+});
+
+Deno.test("Creates an array from a .sudoku file.", function () {
+  assertEquals(
+    ArrayOfNumbers.fromSudokuFile(validFile)[1],
+    ArrayOfNumbers.from(sudokuValues),
   );
 });

@@ -1,6 +1,66 @@
 import { assertEquals } from "https://deno.land/std@0.178.0/testing/asserts.ts";
 import { ArrayOfNumbers } from "../src/ArrayOfNumbers.ts";
 
+Deno.test("Gets missing digits.", function () {
+  assertEquals(
+    ArrayOfNumbers.from([1, 2, 3]).getMissingDigits(),
+    ArrayOfNumbers.from([4, 5, 6, 7, 8, 9]),
+  );
+});
+
+Deno.test("Tests for duplicates.", async function (t) {
+  await t.step("Has duplicates.", function () {
+    assertEquals(ArrayOfNumbers.from([1, 2, 2, 3]).hasDuplicates(), true);
+  });
+  await t.step("All unique.", function () {
+    assertEquals(ArrayOfNumbers.from([1, 2, 3]).hasDuplicates(), false);
+  });
+});
+
+Deno.test("Replaces values.", async function (t) {
+  const inputList = ArrayOfNumbers.from([1, 2, 3]);
+  const duplicateList = ArrayOfNumbers.from([1, 2, 3]);
+  const updatedList = ArrayOfNumbers.from([1, 3, 3]);
+
+  const replacedList = inputList.replace(1, 3);
+
+  await t.step("Creates a new list.", function () {
+    assertEquals(replacedList, updatedList);
+  });
+  await t.step("Leaves the old list the same.", function () {
+    assertEquals(inputList, duplicateList);
+  });
+});
+
+Deno.test("Identifies unique values.", function () {
+  assertEquals(
+    ArrayOfNumbers.from([1, 2, 2, 3, 3, 3, 4, 4]).uniqueValues(),
+    ArrayOfNumbers.from([1, 2, 3, 4]),
+  );
+});
+
+Deno.test("Creates an array from a .sudoku file.", function () {
+  assertEquals(
+    ArrayOfNumbers.fromSudokuFile(validFile)[1],
+    ArrayOfNumbers.from(sudokuValues),
+  );
+});
+
+Deno.test("Validates sudoku puzzles.", async function (t) {
+  await t.step("Finds valid puzzles.", function () {
+    assertEquals(ArrayOfNumbers.from(sudokuValues).isValidSudoku(), [true, ""]);
+  });
+  await t.step("Finds mis-sized puzzles.", function () {
+    assertEquals(ArrayOfNumbers.from(longPuzzle).isValidSudoku()[0], false);
+  });
+  await t.step("Finds bad values.", function () {
+    assertEquals(ArrayOfNumbers.from(badValue).isValidSudoku()[0], false);
+  });
+  await t.step("Finds bad puzzles.", function () {
+    assertEquals(ArrayOfNumbers.from(invalidPuzzle).isValidSudoku()[0], false);
+  });
+});
+
 const validFile = [
   "  abc def ghi",
   "1 7__|_4_|__1",
@@ -100,47 +160,255 @@ const sudokuValues = [
   8,
 ];
 
-Deno.test("Gets missing digits.", function () {
-  assertEquals(
-    ArrayOfNumbers.from([1, 2, 3]).getMissingDigits(),
-    ArrayOfNumbers.from([4, 5, 6, 7, 8, 9]),
-  );
-});
+const invalidPuzzle = [
+  7,
+  7,
+  0,
+  0,
+  4,
+  0,
+  0,
+  0,
+  1,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  2,
+  0,
+  0,
+  0,
+  6,
+  0,
+  2,
+  0,
+  9,
+  0,
+  8,
+  0,
+  0,
+  0,
+  3,
+  5,
+  0,
+  4,
+  9,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  4,
+  0,
+  0,
+  2,
+  1,
+  0,
+  8,
+  5,
+  0,
+  0,
+  0,
+  1,
+  0,
+  9,
+  0,
+  6,
+  0,
+  7,
+  0,
+  0,
+  0,
+  8,
+  0,
+  0,
+  0,
+  4,
+  0,
+  0,
+  6,
+  0,
+  0,
+  0,
+  2,
+  0,
+  0,
+  0,
+  8,
+];
 
-Deno.test("Tests for duplicates.", async function (t) {
-  await t.step("Has duplicates.", function () {
-    assertEquals(ArrayOfNumbers.from([1, 2, 2, 3]).hasDuplicates(), true);
-  });
-  await t.step("All unique.", function () {
-    assertEquals(ArrayOfNumbers.from([1, 2, 3]).hasDuplicates(), false);
-  });
-});
+const longPuzzle = [
+  9,
+  7,
+  0,
+  0,
+  0,
+  4,
+  0,
+  0,
+  0,
+  1,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  2,
+  0,
+  0,
+  0,
+  6,
+  0,
+  2,
+  0,
+  9,
+  0,
+  8,
+  0,
+  0,
+  0,
+  3,
+  5,
+  0,
+  4,
+  9,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  4,
+  0,
+  0,
+  2,
+  1,
+  0,
+  8,
+  5,
+  0,
+  0,
+  0,
+  1,
+  0,
+  9,
+  0,
+  6,
+  0,
+  7,
+  0,
+  0,
+  0,
+  8,
+  0,
+  0,
+  0,
+  4,
+  0,
+  0,
+  6,
+  0,
+  0,
+  0,
+  2,
+  0,
+  0,
+  0,
+  8,
+];
 
-Deno.test("Replaces values.", async function (t) {
-  const inputList = ArrayOfNumbers.from([1, 2, 3]);
-  const duplicateList = ArrayOfNumbers.from([1, 2, 3]);
-  const updatedList = ArrayOfNumbers.from([1, 3, 3]);
-
-  const replacedList = inputList.replace(1, 3);
-
-  await t.step("Creates a new list.", function () {
-    assertEquals(replacedList, updatedList);
-  });
-  await t.step("Leaves the old list the same.", function () {
-    assertEquals(inputList, duplicateList);
-  });
-});
-
-Deno.test("Identifies unique values.", function () {
-  assertEquals(
-    ArrayOfNumbers.from([1, 2, 2, 3, 3, 3, 4, 4]).uniqueValues(),
-    ArrayOfNumbers.from([1, 2, 3, 4]),
-  );
-});
-
-Deno.test("Creates an array from a .sudoku file.", function () {
-  assertEquals(
-    ArrayOfNumbers.fromSudokuFile(validFile)[1],
-    ArrayOfNumbers.from(sudokuValues),
-  );
-});
+const badValue = [
+  -7,
+  0,
+  0,
+  0,
+  4,
+  0,
+  0,
+  0,
+  1,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  2,
+  0,
+  0,
+  0,
+  6,
+  0,
+  2,
+  0,
+  9,
+  0,
+  8,
+  0,
+  0,
+  0,
+  3,
+  5,
+  0,
+  4,
+  9,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  4,
+  0,
+  0,
+  2,
+  1,
+  0,
+  8,
+  5,
+  0,
+  0,
+  0,
+  1,
+  0,
+  9,
+  0,
+  6,
+  0,
+  7,
+  0,
+  0,
+  0,
+  8,
+  0,
+  0,
+  0,
+  4,
+  0,
+  0,
+  6,
+  0,
+  0,
+  0,
+  2,
+  0,
+  0,
+  0,
+  8,
+];

@@ -1,3 +1,5 @@
 import { ArrayOfNumbers } from "./src/ArrayOfNumbers.ts";
 
-console.log(ArrayOfNumbers.from([1, 2, 3]).getMissingDigits());
+const startFile = await Deno.readTextFile("./io/start.sudoku");
+
+console.log(startFile);

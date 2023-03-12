@@ -4,7 +4,7 @@ import { ArrayOfNumbers } from "../src/ArrayOfNumbers.ts";
 Deno.test(function getsMissingDigits() {
   assertEquals(
     ArrayOfNumbers.from([1, 2, 3]).getMissingDigits(),
-    new ArrayOfNumbers([4, 5, 6, 7, 8, 9]),
+    ArrayOfNumbers.from([4, 5, 6, 7, 8, 9]),
   );
 });
 

@@ -1,4 +1,4 @@
-import "./Array.ts" // New methods on Array<number>
+import * as Numbers from "./src/Numbers.ts";
 
 export function add(a: number, b: number): number {
   return a + b;
@@ -6,5 +6,5 @@ export function add(a: number, b: number): number {
 
 // Learn more at https://deno.land/manual/examples/module_metadata#concepts
 if (import.meta.main) {
-  console.log([1, 2, 3].getMissingDigits())
+  console.log(Numbers.getMissingDigits([1, 2, 3]));
 }

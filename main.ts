@@ -8,6 +8,10 @@ let [err, startSudoku] = ArrayOfNumbers.fromSudokuFile(startFile);
 
 if (err) throw err;
 
+err = startSudoku.isValidSudoku()[1];
+
+if (err) throw err;
+
 const numberOfBlanks = startSudoku.getBlankCells().length;
 let workingPuzzles: ArrayOfNumbers[] = [startSudoku];
 

@@ -31,6 +31,6 @@ for (let i = 1; i <= numberOfBlanks; i++) {
   console.log(`Completed run ${i} with ${newBranches.length} branches.`);
 }
 
-console.log(workingPuzzles);
+await Deno.writeTextFile("./io/finish.sudoku", workingPuzzles[0].toSudokuFile());
 
-console.log(`Ran successfully in ${Date.now() - t0} miliseconds.`);
+console.log(`Ran successfully in ${Date.now() - t0} miliseconds.\nThe solution is in ./io/finish.sudoku.`);

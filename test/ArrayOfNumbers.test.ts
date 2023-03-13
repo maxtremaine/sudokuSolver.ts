@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.178.0/testing/asserts.ts";
-import { ArrayOfNumbers } from "../src/ArrayOfNumbers.ts";
+import { ArrayOfNumbers, BlankCell } from "../src/ArrayOfNumbers.ts";
 
 Deno.test("Gets missing digits.", function () {
   assertEquals(
@@ -61,13 +61,28 @@ Deno.test("Validates sudoku puzzles.", async function (t) {
   });
 });
 
-Deno.test("Gets blank cells.", function () {
+Deno.test("Gets related cells.", function () {
   const relatedToOne = ArrayOfNumbers.from([1, 4, 6, 7]);
   assertEquals(
     ArrayOfNumbers.fromSudokuFile(validFile)[1].getRelatedCells(1),
     relatedToOne,
   );
 });
+
+Deno.test("Gets blank cells.", function () {
+  const blankCell: BlankCell[] = [{
+    index: 1,
+    possibleValues: ArrayOfNumbers.from([1]),
+  }];
+  assertEquals(
+    ArrayOfNumbers.fromSudokuFile(missingOne)[1].getBlankCells(),
+    blankCell,
+  );
+});
+
+Deno.test("Spits out a .sudoku file.", function() {
+  assertEquals(ArrayOfNumbers.from(sudokuValues).toSudokuFile(), validFile);
+})
 
 const validFile = [
   "  abc def ghi",
@@ -82,6 +97,21 @@ const validFile = [
   "7 _1_|9_6|_7_",
   "8 __8|___|4__",
   "9 6__|_2_|__8",
+].join("\n");
+
+const missingOne = [
+  "  abc def ghi",
+  "1 7_2|954|836",
+  "2 539|186|247",
+  "3 684|237|519",
+  "  -----------",
+  "4 325|479|681",
+  "5 198|365|724",
+  "6 476|821|953",
+  "  -----------",
+  "7 247|593|168",
+  "8 861|742|395",
+  "9 953|618|472",
 ].join("\n");
 
 const sudokuValues = [

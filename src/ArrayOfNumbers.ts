@@ -1,5 +1,5 @@
 export class ArrayOfNumbers {
-  private readonly numbers: number[];
+  readonly numbers: number[];
 
   constructor(numbers: number[]) {
     this.numbers = numbers;

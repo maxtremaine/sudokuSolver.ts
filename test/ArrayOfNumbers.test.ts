@@ -61,6 +61,14 @@ Deno.test("Validates sudoku puzzles.", async function (t) {
   });
 });
 
+Deno.test("Gets blank cells.", function () {
+  const relatedToOne = ArrayOfNumbers.from([1, 4, 6, 7]);
+  assertEquals(
+    ArrayOfNumbers.fromSudokuFile(validFile)[1].getRelatedCells(1),
+    relatedToOne,
+  );
+});
+
 const validFile = [
   "  abc def ghi",
   "1 7__|_4_|__1",

@@ -2,6 +2,10 @@ import { ArrayOfNumbers } from "./src/ArrayOfNumbers.ts";
 
 const startFile = await Deno.readTextFile("./io/start.sudoku");
 
-const [err, startSudoku] = ArrayOfNumbers.fromSudokuFile("sudokuFile");
+let [err, startSudoku] = ArrayOfNumbers.fromSudokuFile(startFile);
 
-console.log(err, startSudoku);
+if (err) throw err;
+
+let workingPuzzles = [startSudoku];
+
+console.log(workingPuzzles[0].getRelatedCells(1));

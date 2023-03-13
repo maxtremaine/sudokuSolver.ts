@@ -53,6 +53,12 @@ export class ArrayOfNumbers {
     return ArrayOfNumbers.from(this.numbers.filter(fn));
   }
 
+  sort(): ArrayOfNumbers {
+    const newArray = this.numbers;
+    newArray.sort();
+    return ArrayOfNumbers.from(newArray);
+  }
+
   getMissingDigits(): ArrayOfNumbers {
     return new ArrayOfNumbers(
       [...Array(10).keys()].slice(1) // Range from 1 to 9, inclusive.
@@ -107,7 +113,41 @@ export class ArrayOfNumbers {
 
     return [true, ""];
   }
+
+  getRelatedCells(index: number) {
+    return ArrayOfNumbers.from(
+      groups.filter((group) => group.includes(index))
+        .flat(),
+    )
+      .uniqueValues()
+      .map((i) => this.numbers[i])
+      .filter((x) => x !== 0)
+      .uniqueValues()
+      .sort();
+  }
+
+  getBlankCells(): BlankCell[] {
+    const acc: BlankCell[] = [];
+    this.numbers.forEach((cell, index) => {
+      if (cell === 0) {
+        acc.push({
+          index,
+          possibleValues: ArrayOfNumbers.from(this.numbers)
+            .getRelatedCells(index)
+            .getMissingDigits(),
+        });
+      }
+    });
+    return acc.sort((x, y) =>
+      x.possibleValues.numbers.length - y.possibleValues.numbers.length
+    );
+  }
 }
+
+type BlankCell = {
+  index: number;
+  possibleValues: ArrayOfNumbers;
+};
 
 const sudokuFileValues = [
   "_",
